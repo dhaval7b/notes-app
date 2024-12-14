@@ -4,6 +4,7 @@ const API = axios.create({baseURL: "http://localhost:5000"});
 export const getAllNotes = async () => {
     try{
         const response = await API.get("/notes");
+        // console.log(response.data)
         return response.data;
     } catch(error){
         console.error("failed to fetch notes ", error)

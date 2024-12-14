@@ -1,19 +1,16 @@
-import { Button, Container, Typography, Card, CardContent, CardActions, Modal } from "@mui/material";
+import { Button, Container, Typography, Card, CardContent, Modal, Grid, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
-import { deleteNote, getAllNotes } from "../apiService";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { getAllNotes } from "./apiService";
 import { Link } from "react-router-dom";
-import CreateNote from './pages/CreateNote'
+import CreateOrUpdateNote from './components/CreateOrUpdateNote'
+import { pretifyDate } from "./util";
 const Home = () => {
     const [notes, setNotes] = useState([]);
     const [open, setOpen] = useState(false);
     const fetchNotes = async () =>{
         const data  = await getAllNotes();
-        // console.log(data)
         setNotes(data);
-        // console.log(notes)
     }
     const handleCreate = () => {
         setOpen(true);
@@ -23,64 +20,65 @@ const Home = () => {
         fetchNotes();
     }
 
-    const handleDelete = async (id) => {
-        await deleteNote(id);
-        await fetchNotes();
-    }
+    
     useEffect(() => {
         fetchNotes();
     }, [])
     return ( 
         <>
+        
             <Container>
-                <div>
-                    <Typography 
-                        variant="h4" 
-                        gutterBottom 
-                    >
-                        Notes
-                    </Typography>
-                    <Button 
-                        variant="contained" 
-                        color="primary" 
-                        onClick={handleCreate}
-                        style={{marginBottom : '20px'}}>Create New <AddIcon></AddIcon>
-                    </Button>
-                    <Modal
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                        >
-                        <CreateNote handleClose={handleClose}>
-
-                        </CreateNote>
-                    </Modal>
+                <Typography 
+                    variant="h4" 
+                    gutterBottom 
+                >
+                    Notes
+                </Typography>
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={handleCreate}
+                    style={{marginBottom : '20px'}}>Create New <AddIcon></AddIcon>
+                </Button>
+                
+                <Grid container spacing={2} direction="column">
                     {notes.length > 0 ? (notes.map((note) => (
-                        <Card key={note.id} style={{marginBottom : '20px'}}>
-                            <CardContent>
-                                <Typography variant="h4" noWrap gutterBottom>{note.title}</Typography>
-                                <Typography variant="p" gutterBottom>{note.createTime.toLocaleString()}</Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Link to={`/notes/${note.id}`} style={{textDecoration: 'none'}} >
-                                    <Button color="secondary">
-                                        <EditIcon></EditIcon>
-                                    </Button>
-                                </Link>
-                                <Button onClick={() => {handleDelete(note.id)}} color="error" >
-                                    <DeleteIcon/>
-                                </Button>
-                            </CardActions>
-                        </Card>
-                    ))) :
-                    (
+                        <Grid  item xs={12} sm={6} md={4} key={note.id}>
+                            <Link to={`/notes/${note.id}`} style={{textDecoration: 'none'}} >
+                                <Card  style={{marginBottom : '20px'}}>
+                                    <CardContent>
+                                        <Typography variant="h5" noWrap gutterBottom>{note.title}</Typography>
+                                        <Typography 
+                                            variant="body2" 
+                                            gutterBottom
+                                            sx={{ marginTop: 1, fontSize: { xs: "0.8rem", sm: "0.9rem" }, color: "text.secondary" }}
+                                        >{pretifyDate(note.createTime)}</Typography>
+                                    </CardContent>
+                                    
+                                </Card>
+                            </Link>
+                        </Grid>
+                    ))) : (
                         <Typography>
                             No notes available
                         </Typography>
                     )}
-                    
-                </div>
+                </Grid>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backdrop: "transparent",
+                        
+                    }}
+                    >
+                        <CreateOrUpdateNote type={"create"} handleClose={handleClose}/>
+                </Modal>
             </Container>
         </>
     );
