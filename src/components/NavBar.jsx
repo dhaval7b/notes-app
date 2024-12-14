@@ -27,7 +27,7 @@ export default function NavBar() {
       >
           <List>
               <ListItem disablePadding>
-                  <ListItemButton component={Link} to="/">
+                  <ListItemButton component={Link} to="/notes">
                       <ListItemText primary="Notes" />
                   </ListItemButton>
               </ListItem>
