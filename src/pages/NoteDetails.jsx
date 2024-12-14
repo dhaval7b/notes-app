@@ -56,11 +56,6 @@ const NoteDetails = () => {
             Return
             </Button>
         </Box>
-       {/* <Typography variant="h4" style={{marginTop : "20px"}}>Edit Note</Typography>
-       <Button onClick={handleReturn}>
-        Return &nbsp;
-        <KeyboardReturnIcon></KeyboardReturnIcon> */}
-       {/* </Button> */}
         <Card sx={{ boxShadow: 3, width: '100%', maxWidth: '600px', margin: 'auto' }}>
             <CardContent>
                 <Typography variant="h6" sx={{ fontSize: { xs: "1.2rem", sm: "1.5rem" } }}>  { ` Title : ${note.title}`}</Typography>
