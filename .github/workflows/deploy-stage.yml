@@ -1,0 +1,40 @@
+name: Deploy React App
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment only on push to the 'main' branch
+  pull_request:
+    branches:
+      - main  # Trigger deployment when a PR is merged into 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run tests
+      - name: Run Tests
+        run: npm test
+
+      # Step 5: Build React app
+      - name: Build React app
+        run: npm run build
+
+      # Step 6: Trigger Netlify Deploy Hook
+      - name: Deploy to Netlify
+        run: |
+          curl -X POST -d {} https://api.netlify.com/build_hooks/675dfc2c16ff10a83426009b
