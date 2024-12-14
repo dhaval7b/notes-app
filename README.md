@@ -101,3 +101,8 @@ npm run preview
 ```
 
 ## Additional Notes
+I have deployed the app to Netlify: [https://notes-app-dhaval.netlify.app/](https://notes-app-dhaval.netlify.app/)
+
+I haven't configured it for the production environment due to time limitations but would like to do it.
+
+Feel free to customize this README file further to suit your needs. If you have any specific questions or need further assistance, feel free to ask!
