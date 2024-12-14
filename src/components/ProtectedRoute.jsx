@@ -3,8 +3,11 @@ import { Route, Redirect } from 'react-router-dom';
 import { useAuth } from '../providers/AuthProvider';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-    const { user } = useAuth();
-
+    const { user, loading } = useAuth();
+    
+    if (loading) {
+        return <div>Loading...</div>;
+    }
     return (
         <Route
             {...rest}
